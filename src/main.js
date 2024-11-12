@@ -39,9 +39,12 @@ async function handleSearch(event) {
   totalLoaded = 0;
   container.innerHTML = '';
   loadMoreBtn.style.display = 'none';
+  loader.style.display = 'block';
 
   try {
     const data = await fetchImages(query, page);
+
+    loader.style.display = 'none';
 
     if (data.hits.length === 0) {
       iziToast.warning({
@@ -55,28 +58,34 @@ async function handleSearch(event) {
       totalLoaded = data.hits.length;
       container.innerHTML = renderImages(data.hits);
       setupImageLoadHandlers(container);
-      toggleLoadMoreButton();
 
-      lightbox =
-        lightbox ||
-        new SimpleLightbox('.gallery .galleries a', {
+      if (!lightbox) {
+        lightbox = new SimpleLightbox('.gallery .galleries a', {
           captionsData: 'alt',
           captionDelay: 250,
         });
-      lightbox.refresh();
+      } else {
+        lightbox.refresh();
+      }
 
-      loadMoreBtn.style.display = 'block';
+      toggleLoadMoreButton();
     }
   } catch (error) {
+    loader.style.display = 'none';
     console.error('Error during image fetching:', error);
   }
 
   form.reset();
 }
+
 async function handleLoadMore() {
   page++;
+  loader.style.display = 'block';
+
   try {
     const data = await fetchImages(query, page);
+
+    loader.style.display = 'none';
     totalLoaded += data.hits.length;
     container.insertAdjacentHTML('beforeend', renderImages(data.hits));
     setupImageLoadHandlers(container);
@@ -88,12 +97,13 @@ async function handleLoadMore() {
     toggleLoadMoreButton();
     scrollPage();
   } catch (error) {
+    loader.style.display = 'none';
     console.error('Помилка при завантаженні додаткових зображень:', error);
   }
 }
 
 function toggleLoadMoreButton() {
-  if (totalLoaded >= totalHits) {
+  if (totalLoaded >= totalHits || totalHits < 15) {
     loadMoreBtn.style.display = 'none';
     iziToast.info({
       title: 'Інформація',
