@@ -107,7 +107,7 @@ function toggleLoadMoreButton() {
     loadMoreBtn.style.display = 'none';
     iziToast.info({
       title: 'Інформація',
-      message: 'Вибачте, але ви досягли кінця результатів пошуку.',
+      message: 'Were sorry, but youve reached the end of search results.',
     });
   } else {
     loadMoreBtn.style.display = 'block';
