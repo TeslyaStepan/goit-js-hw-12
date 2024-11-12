@@ -80,6 +80,7 @@ button {
   padding: 8px 16px;
   min-width: 91px;
   background-color: #4e75ff;
+  border: none;
 }
 
 img {
@@ -102,7 +103,8 @@ img {
 }
 
 .galleries {
-  flex-basis: calc((100% - 24px) / 3);
+  /* width: calc((100% - 24px) / 3); */
+  width: 360px;
   border: 1px solid black;
 }
 
@@ -119,4 +121,9 @@ img {
 .content div span {
   display: block;
   text-align: center;
+}
+
+.load-more {
+  width: 125px;
+  margin: 32px 0;
 }

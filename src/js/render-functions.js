@@ -14,7 +14,6 @@ export function renderImages(array) {
       }) => {
         return `
       <div class="galleries">
-                <div class="loader" style="display: block;"></div> 
                 <a href="${largeImageURL}">
                     <img src="${webformatURL}" alt="${tags}" />
                 </a>
@@ -34,11 +33,17 @@ export function setupImageLoadHandlers(container) {
   const images = container.querySelectorAll('.galleries img');
   images.forEach(img => {
     const loader = img.parentElement.previousElementSibling;
+
     img.onload = () => {
-      loader.style.display = 'none';
+      if (loader) {
+        loader.style.display = 'none';
+      }
     };
+
     img.onerror = () => {
-      loader.style.display = 'none';
+      if (loader) {
+        loader.style.display = 'none';
+      }
     };
   });
 }
